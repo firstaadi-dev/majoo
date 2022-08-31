@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -21,7 +22,7 @@ func NewTransactionHandler(r *echo.Group, us transaction.UseCase) {
 	r.Use(middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningKey: []byte("signingkey"),
 	}))
-	r.GET("/merchant/:id/:page", handler.GetMerchantReport)
+	r.GET("/merchant/:id/:date", handler.GetMerchantReport)
 	r.GET("/outlet/:id/:date", handler.GetOutletReport)
 }
 
@@ -34,8 +35,11 @@ func (h *TransactionHandler) GetMerchantReport(c echo.Context) error {
 	if idToken != id {
 		return c.String(http.StatusUnauthorized, "can't access another merchant report")
 	}
-	page, _ := strconv.Atoi(c.Param("page"))
-	res, err := h.useCase.ReportDailyMerchantOmzet(id, page)
+	// page, _ := strconv.Atoi(c.Param("page"))
+	// res, err := h.useCase.ReportDailyMerchantOmzet(id, page)
+	date, _ := strconv.Atoi(c.Param("date"))
+	fmt.Println(id, date)
+	res, err := h.useCase.ReportDailyMerchantOmzet(id, date)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
