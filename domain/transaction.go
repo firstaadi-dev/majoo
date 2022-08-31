@@ -16,7 +16,6 @@ type Transaction struct {
 type MerchantOmzet struct {
 	Name  string
 	Omzet int
-	Day   int
 }
 
 type OutletOmzet struct {
@@ -24,5 +23,3 @@ type OutletOmzet struct {
 	OutletName   string
 	Omzet        int
 }
-
-

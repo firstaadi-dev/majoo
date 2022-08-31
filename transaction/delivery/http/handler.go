@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -31,14 +30,20 @@ func (h *TransactionHandler) GetMerchantReport(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return err
+	}
 	if idToken != id {
 		return c.String(http.StatusUnauthorized, "can't access another merchant report")
 	}
-	// page, _ := strconv.Atoi(c.Param("page"))
-	// res, err := h.useCase.ReportDailyMerchantOmzet(id, page)
-	date, _ := strconv.Atoi(c.Param("date"))
-	fmt.Println(id, date)
+	date, err := strconv.Atoi(c.Param("date"))
+	if err != nil {
+		return err
+	}
+	if date <= 0 || date > 30 {
+		return c.String(http.StatusBadRequest, "invalid date")
+	}
 	res, err := h.useCase.ReportDailyMerchantOmzet(id, date)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
@@ -52,7 +57,10 @@ func (h *TransactionHandler) GetOutletReport(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return err
+	}
 	outletMerchantId, err := h.useCase.MerchantByOutletID(id)
 	if err != nil {
 		return c.String(http.StatusNotFound, "outlet not found")
@@ -60,7 +68,13 @@ func (h *TransactionHandler) GetOutletReport(c echo.Context) error {
 	if idToken != outletMerchantId.ID {
 		return c.String(http.StatusUnauthorized, "can't access another merchant report")
 	}
-	date, _ := strconv.Atoi(c.Param("date"))
+	date, err := strconv.Atoi(c.Param("date"))
+	if err != nil {
+		return err
+	}
+	if date <= 0 || date > 30 {
+		return c.String(http.StatusBadRequest, "invalid date")
+	}
 	res, err := h.useCase.ReportDailyOutletOmzet(id, date)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
