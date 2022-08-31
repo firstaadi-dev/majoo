@@ -13,7 +13,7 @@ type AuthHandler struct {
 	useCase auth.UseCase
 }
 
-func NewAuthHandler(r *echo.Echo, us auth.UseCase) {
+func NewAuthHandler(r *echo.Group, us auth.UseCase) {
 	handler := &AuthHandler{
 		useCase: us,
 	}

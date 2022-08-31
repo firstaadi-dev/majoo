@@ -12,4 +12,9 @@ type Transaction struct {
 	UpdatedAt  time.Time
 	UpdatedBy  int
 }
- 
+
+type MerchantOmzet struct {
+	Name  string
+	Omzet int
+	Date  time.Time
+}
