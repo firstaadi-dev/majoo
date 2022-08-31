@@ -2,7 +2,6 @@ package http
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 
 	"github.com/firstaadi-dev/majoo-backend-test/auth"
@@ -34,7 +33,6 @@ func (h *AuthHandler) Login(c echo.Context) error {
 
 	err := c.Bind(&input)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 	token, err := h.useCase.Login(input.Username, input.Password)

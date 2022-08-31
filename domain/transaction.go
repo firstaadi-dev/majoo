@@ -16,5 +16,13 @@ type Transaction struct {
 type MerchantOmzet struct {
 	Name  string
 	Omzet int
-	Date  time.Time
+	Day   int
 }
+
+type OutletOmzet struct {
+	MerchantName string
+	OutletName   string
+	Omzet        int
+}
+
+
